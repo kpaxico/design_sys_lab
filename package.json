@@ -5,7 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"dev:icons": "npx tsx scripts/build-icons.ts --watch",
+		"build:icons": "npx tsx scripts/build-icons.ts",
+		"build": "npm run build:icons && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -29,6 +31,7 @@
 		"@fontsource-variable/nunito-sans": "^5.2.7",
 		"@fontsource-variable/outfit": "^5.2.8",
 		"@fontsource-variable/playfair-display": "^5.2.8",
+		"@fontsource-variable/plus-jakarta-sans": "^5.2.8",
 		"@fontsource-variable/public-sans": "^5.2.7",
 		"@fontsource-variable/raleway": "^5.2.8",
 		"@fontsource-variable/roboto": "^5.2.10",

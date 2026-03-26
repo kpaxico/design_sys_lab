@@ -29,6 +29,24 @@ npm run dev
 npm run dev -- --open
 ```
 
+To kill a background dev server (e.g. started by Claude Code):
+
+```sh
+npx kill-port 5180
+```
+
+To regenerate icon index files (after adding new icon references in .svelte files):
+
+```sh
+npm run build:icons
+```
+
+Or run in watch mode alongside the dev server:
+
+```sh
+npm run dev:icons
+```
+
 ## Building
 
 To create a production version of your app:
