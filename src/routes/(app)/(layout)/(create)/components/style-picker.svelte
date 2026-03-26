@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { STYLES } from "$lib/registry/config.js";
+	import { STYLES, PRESETS } from "$lib/registry/config.js";
 	import LockButton from "./lock-button.svelte";
 	import * as Picker from "./picker/index.js";
 	import { useDesignSystem } from "$lib/features/design-system/index.js";
@@ -18,6 +18,21 @@
 	);
 
 	const isMobile = new IsMobile();
+
+	// When style changes, apply the matching preset (if one exists)
+	function handleStyleChange(styleName: string) {
+		designSystem.style = styleName;
+		const preset = PRESETS.find((p) => p.style === styleName);
+		if (preset) {
+			designSystem.baseColor = preset.baseColor;
+			designSystem.theme = preset.theme;
+			designSystem.iconLibrary = preset.iconLibrary;
+			designSystem.font = preset.font;
+			designSystem.menuAccent = preset.menuAccent;
+			designSystem.menuColor = preset.menuColor;
+			designSystem.radius = preset.radius;
+		}
+	}
 </script>
 
 <div class="group/picker relative">
@@ -42,7 +57,7 @@
 			sideOffset={submenu ? 5 : 20}
 			{submenu}
 		>
-			<Picker.RadioGroup bind:value={designSystem.style}>
+			<Picker.RadioGroup value={designSystem.style} onValueChange={handleStyleChange}>
 				<Picker.Group>
 					{#each STYLES as style, i (style.name)}
 						<Picker.RadioItem value={style.name} closeOnSelect={false}>

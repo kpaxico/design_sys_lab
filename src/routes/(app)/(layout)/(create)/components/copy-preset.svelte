@@ -28,5 +28,5 @@
 		className
 	)}
 >
-	<span>{clipboard.copied ? "Copied" : `--preset ${presetCode}`}</span>
+	<span class="truncate">{clipboard.copied ? "Copied" : `--preset ${presetCode.length > 12 ? presetCode.slice(0, 12) + "…" : presetCode}`}</span>
 </Button>
