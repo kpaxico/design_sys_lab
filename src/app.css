@@ -6,6 +6,7 @@
 @import "./lib/registry/styles/style-lyra.css" layer(base);
 @import "./lib/registry/styles/style-maia.css" layer(base);
 @import "./lib/registry/styles/style-mira.css" layer(base);
+@import "./lib/registry/styles/style-petmedilog.css" layer(base);
 
 @import "@fontsource-variable/geist/index.css";
 @import "@fontsource-variable/inter/index.css";
@@ -24,12 +25,14 @@
 @import "@fontsource-variable/merriweather/index.css";
 @import "@fontsource-variable/lora/index.css";
 @import "@fontsource-variable/playfair-display/index.css";
+@import "@fontsource-variable/plus-jakarta-sans/index.css";
 
 @custom-variant style-vega (&:where(.style-vega *));
 @custom-variant style-nova (&:where(.style-nova *));
 @custom-variant style-lyra (&:where(.style-lyra *));
 @custom-variant style-maia (&:where(.style-maia *));
 @custom-variant style-mira (&:where(.style-mira *));
+@custom-variant style-petmedilog (&:where(.style-petmedilog *));
 
 @custom-variant dark (&:is(.dark *));
 @custom-variant fixed (&:is(.layout-fixed *));

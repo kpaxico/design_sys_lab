@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PetMediLog Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#172642", // Midnight Blue
+              "on-primary": "#ffffff",
+              "primary-container": "#b7c7ea", // Baby Blue highlight
+              "on-primary-container": "#081a33",
+              "secondary": "#595f69", // Slate
+              "on-secondary": "#ffffff",
+              "secondary-container": "#f1e9db", // Khaki/Beige
+              "on-secondary-container": "#211b10",
+              "tertiary": "#7d6e5d",
+              "surface": "#fff8f3", // Soft Warm White
+              "surface-variant": "#faecda",
+              "outline": "#8b8b8b",
+              "error": "#b3261e"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {
+              "DEFAULT": "1.5rem",
+              "lg": "2rem",
+              "xl": "2.5rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        -webkit-tap-highlight-color: transparent;
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-primary">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#fff8f3] dark:bg-slate-950 shadow-sm dark:shadow-none">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border-2 border-primary/10">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a senior golden retriever dog" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZuyllBc_9D198ZeZQPTfFhASwSpJKindvHQSnxvgSDU26w4BnZzuI4UsCZJ3UcMsdDdBhhTetWX0DGCjFblpAcn3OUtzkD9sBvZNBWUxdp4AXJaVyCvHwU-kuAp-RuT0-_6QdyZirNGWG6qevK-WHyyDr3F1lnzEwylxRMjHqzIHyOIPV6xLNjn47pc49DD6adCQdPoY0HEs5nDPGLImu5lJk0OK0Y9pcty1UT2wWgxyKFf28og6JEd4DNRbjtajzI6wwp_VSHL-F"/>
+</div>
+<span class="text-2xl font-extrabold text-[#172642] dark:text-blue-200 font-headline tracking-tight">PetMediLog</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#b7c7ea]/20 transition-colors active:scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-8">
+<section class="relative">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h1 class="font-headline text-4xl font-extrabold text-primary tracking-tight">Daisy</h1>
+<p class="text-secondary font-semibold uppercase tracking-[0.15em] text-[10px] mt-1">10 Year Old Golden Retriever</p>
+</div>
+<div class="bg-primary-container/40 px-5 py-2 rounded-full">
+<span class="text-primary text-sm font-bold">Stable Health</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-variant rounded-3xl p-6 flex flex-col justify-between aspect-square relative overflow-hidden group border border-primary/5">
+<div class="z-10">
+<span class="material-symbols-outlined text-primary mb-2 bg-white/50 p-2 rounded-full">scale</span>
+<h3 class="text-secondary text-sm font-semibold mt-2">Current Weight</h3>
+</div>
+<div class="z-10">
+<div class="text-3xl font-extrabold text-primary">28.4 <span class="text-lg font-medium opacity-60">kg</span></div>
+<p class="text-[11px] text-secondary mt-1 font-medium italic">Last updated: 3 days ago</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-9xl">monitor_weight</span>
+</div>
+</div>
+<div class="bg-secondary-container rounded-3xl p-6 flex flex-col justify-between aspect-square relative overflow-hidden group border border-primary/5">
+<div class="z-10">
+<span class="material-symbols-outlined text-on-secondary-container mb-2 bg-white/40 p-2 rounded-full">event_upcoming</span>
+<h3 class="text-on-secondary-container/80 text-sm font-semibold mt-2">Next Vet Visit</h3>
+</div>
+<div class="z-10">
+<div class="text-3xl font-extrabold text-on-secondary-container">12 <span class="text-lg font-medium opacity-60">days</span></div>
+<p class="text-[11px] text-on-secondary-container/70 mt-1 font-medium">Routine Senior Checkup</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-9xl">medical_services</span>
+</div>
+</div>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex justify-between items-center">
+<h2 class="font-headline text-xl font-bold text-primary">Today's Medications</h2>
+<button class="text-primary text-sm font-bold hover:underline decoration-2 underline-offset-4">View All</button>
+</div>
+<div class="space-y-4">
+<div class="bg-white/60 backdrop-blur-sm border border-primary/5 rounded-2xl p-4 flex items-center gap-4 transition-all hover:bg-white active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-primary">Glucosamine Complex</h4>
+<p class="text-sm text-secondary">Joint support • 8:00 AM</p>
+</div>
+<span class="px-4 py-1.5 rounded-full bg-primary text-white text-[10px] font-bold uppercase tracking-widest">Taken</span>
+</div>
+<div class="bg-white/60 backdrop-blur-sm border border-primary/5 rounded-2xl p-4 flex items-center gap-4 transition-all hover:bg-white active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container">pending</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-primary">Heartworm Preventative</h4>
+<p class="text-sm text-secondary">Chewable tablet • 6:00 PM</p>
+</div>
+<span class="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-widest">Upcoming</span>
+</div>
+<div class="bg-white/60 backdrop-blur-sm border border-error/20 rounded-2xl p-4 flex items-center gap-4 transition-all hover:bg-error/5 active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-primary">Ear Drops</h4>
+<p class="text-sm text-secondary">Antibiotic • 12:00 PM</p>
+</div>
+<span class="px-4 py-1.5 rounded-full bg-error text-white text-[10px] font-bold uppercase tracking-widest">Missed</span>
+</div>
+</div>
+</section>
+<section class="bg-primary p-8 rounded-3xl text-white relative overflow-hidden shadow-xl">
+<div class="relative z-10 space-y-4">
+<h3 class="font-headline text-2xl font-bold">Health Tip for Senior Dogs</h3>
+<p class="text-white/80 leading-relaxed text-sm max-w-[85%]">Keep Daisy's walks gentle. Short, frequent strolls are better for her aging joints than one long marathon.</p>
+<button class="mt-2 bg-primary-container text-primary px-8 py-3 rounded-full font-bold text-sm hover:brightness-110 transition-all active:scale-95">Read More</button>
+</div>
+<div class="absolute right-[-30px] bottom-[-30px] opacity-10">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fff8f3]/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-4px_20px_rgba(33,27,16,0.05)]">
+<a class="flex flex-col items-center justify-center bg-[#172642] text-white rounded-full p-4 scale-110 -translate-y-2 shadow-lg transition-all duration-300 cubic-bezier(0.34, 1.56, 0.64, 1)" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-widest mt-1">Pets</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-widest mt-1">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-widest mt-1">Meds</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold uppercase tracking-widest mt-1">Settings</span>
+</a>
+</nav>
+<button class="fixed bottom-28 right-6 w-16 h-16 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center z-40 active:scale-90 transition-transform hover:rotate-90 duration-300">
+<span class="material-symbols-outlined text-4xl">add</span>
+</button>
+</body></html>

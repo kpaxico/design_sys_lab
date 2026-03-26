@@ -151,6 +151,19 @@ export const PRESETS: Preset[] = [
 		menuColor: "default",
 		radius: "default",
 	},
+	{
+		name: "petmedilog",
+		title: "PetMediLog",
+		description: "Warm & editorial with Baby Blue accents",
+		style: "petmedilog",
+		baseColor: "neutral",
+		theme: "petmedilog",
+		iconLibrary: "lucide",
+		font: "plus-jakarta-sans",
+		menuAccent: "subtle",
+		menuColor: "default",
+		radius: "large",
+	},
 ];
 
 export function getThemesForBaseColor(baseColorName: string) {

@@ -18,13 +18,15 @@ import {
 } from "../../../../routes/(app)/(layout)/(create)/lib/randomize-biases.js";
 import { StateHistory } from "runed";
 import {
+	PRESET_BASE_COLOR_KEYS,
+	PRESET_FONTS,
+} from "shadcn-svelte/preset";
+import {
 	decodePreset,
 	encodePreset,
 	DEFAULT_PRESET_CONFIG,
 	type PresetConfig,
-	PRESET_BASE_COLOR_KEYS,
-	PRESET_FONTS,
-} from "shadcn-svelte/preset";
+} from "../preset-codec.js";
 
 export interface IDesignSystemState extends PresetConfig {
 	preset: string;

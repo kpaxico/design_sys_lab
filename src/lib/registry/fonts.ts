@@ -222,4 +222,17 @@ export const fonts = [
 			dependency: "@fontsource-variable/playfair-display",
 		},
 	},
+	{
+		name: "font-plus-jakarta-sans",
+		title: "Plus Jakarta Sans",
+		type: "registry:font",
+		font: {
+			family: "'Plus Jakarta Sans Variable', sans-serif",
+			provider: "google",
+			variable: "--font-sans",
+			subsets: ["latin"],
+			import: "Plus_Jakarta_Sans",
+			dependency: "@fontsource-variable/plus-jakarta-sans",
+		},
+	},
 ] satisfies RegistryItem[];

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PetMediLog - Medication Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#172642", // Midnight Blue
+              "primary-container": "#b7c7ea", // Baby Blue highlight
+              "on-primary-container": "#172642",
+              "secondary": "#595f69", // Slate
+              "secondary-container": "#faecda", // Khaki/Beige
+              "on-secondary-container": "#2c2a26",
+              "background": "#fff8f3", // Warm off-white
+              "surface": "#fff8f3",
+              "surface-container": "#faecda",
+              "surface-container-low": "#fffbf8",
+              "surface-container-high": "#f5e6d3",
+              "outline": "#8a8d94",
+              "outline-variant": "#d1d4d9",
+              "on-surface": "#172642",
+              "on-surface-variant": "#595f69"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {
+                "DEFAULT": "1.5rem",
+                "lg": "2rem",
+                "xl": "3rem",
+                "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar (from COMPONENTS_10) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#fff8f3] dark:bg-slate-950 shadow-sm dark:shadow-none">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container overflow-hidden flex items-center justify-center border border-outline-variant/30">
+<img alt="Daisy the dog" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbe0O9W0OSRxHRklXPCdRQxetyJVSXZ9746BqR_zii00RzHbELd2hVVTJoIQla6LXpyY1iurC-tqFTPnMG2UJt7jvubh8I2nhU2lzNcyIJOjapWGjUzdraHGtDth9TZUl3kuvwPryjbNnkk-iZfcWIConvUk52X9I_JdDlZpnuqQP3RguKO24DcZZDVJyHeEvYbX_jjD48ewwWGJbsbSQ1BGjT0JziPFYUvPr0ZOOZlj8f9hQ1ZsiORggJl8_sYK-xYcaeoptrMFC7"/>
+</div>
+<h1 class="font-headline font-extrabold tracking-tight text-xl text-[#172642] dark:text-blue-200">PetMediLog</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#b7c7ea]/20 dark:hover:bg-blue-900/30 transition-colors active:scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined text-[#172642]">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Hero Profile Section -->
+<section class="mb-10 relative">
+<div class="flex items-baseline justify-between mb-4">
+<h2 class="font-headline text-4xl font-extrabold text-on-surface tracking-tight">Daisy's Meds</h2>
+<span class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">Active Plan</span>
+</div>
+<p class="text-on-surface-variant font-medium max-w-xs mb-8">Managing health prescriptions and supplements for a happy, healthy pup.</p>
+<!-- Quick Add Floating Action -->
+<button class="group flex items-center gap-3 bg-primary text-white px-8 py-5 rounded-full shadow-xl active:scale-95 transition-all duration-300">
+<span class="material-symbols-outlined font-bold">add</span>
+<span class="font-headline font-bold text-lg tracking-tight">Add New Medication</span>
+</button>
+</section>
+<!-- Active Medications (Bento Grid Style) -->
+<section class="mb-12">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary scale-110" style="font-variation-settings: 'FILL' 1;">pulse_alert</span>
+<h3 class="font-headline text-2xl font-bold tracking-tight">Active Medications</h3>
+</div>
+<div class="grid grid-cols-1 gap-5">
+<!-- Card 1: Apoquel -->
+<div class="bg-surface-container rounded-3xl p-7 flex flex-col justify-between min-h-[180px] relative overflow-hidden group shadow-sm border border-outline-variant/20">
+<div class="absolute -right-6 -top-6 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[160px]">medication</span>
+</div>
+<div>
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline text-2xl font-extrabold text-primary">Apoquel</h4>
+<span class="bg-white/60 text-secondary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Daily</span>
+</div>
+<div class="space-y-1.5">
+<p class="text-base font-bold text-on-surface">3.6mg Tablet</p>
+<p class="text-sm font-medium text-on-surface-variant">Twice daily (AM/PM)</p>
+</div>
+</div>
+<div class="mt-8 pt-5 border-t border-outline/10 flex justify-between items-center">
+<span class="text-xs text-on-surface-variant font-semibold">Started: Oct 12, 2023</span>
+<span class="material-symbols-outlined text-primary font-bold">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Card 2: NexGard -->
+<div class="bg-primary-container/30 rounded-3xl p-7 flex flex-col justify-between min-h-[180px] border border-primary-container/50 shadow-sm relative overflow-hidden group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-headline text-2xl font-extrabold text-primary">NexGard Spectra</h4>
+<span class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Monthly</span>
+</div>
+<div class="space-y-1.5">
+<p class="text-base font-bold text-primary">Chewable Tablet</p>
+<p class="text-sm font-medium text-primary/70">Once every 30 days</p>
+</div>
+</div>
+<div class="mt-8 pt-5 border-t border-primary-container/40 flex justify-between items-center">
+<span class="text-xs text-primary font-semibold">Next: Nov 15, 2023</span>
+<span class="material-symbols-outlined text-primary font-bold">event</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Past Medications (Timeline) -->
+<section>
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-secondary scale-110">history</span>
+<h3 class="font-headline text-2xl font-bold tracking-tight">Past Treatments</h3>
+</div>
+<div class="relative pl-10 space-y-10">
+<!-- Timeline Line -->
+<div class="absolute left-4 top-0 bottom-0 w-0.5 bg-outline-variant opacity-30 rounded-full"></div>
+<!-- Past Entry 1 -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-background border-4 border-secondary/40 shadow-sm"></div>
+<div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<h4 class="font-bold text-lg text-on-surface">Amoxicillin</h4>
+<span class="text-[10px] font-extrabold text-secondary uppercase tracking-widest">Completed</span>
+</div>
+<p class="text-sm font-medium text-on-surface-variant mb-5 leading-relaxed">250mg Liquid suspension. Administered for ear infection clearance.</p>
+<div class="flex items-center gap-2 text-xs font-bold text-secondary">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+                        Aug 01 — Aug 10, 2023
+                    </div>
+</div>
+</div>
+<!-- Past Entry 2 -->
+<div class="relative">
+<div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-background border-4 border-secondary/40 shadow-sm"></div>
+<div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<h4 class="font-bold text-lg text-on-surface">Carprofen</h4>
+<span class="text-[10px] font-extrabold text-secondary uppercase tracking-widest">Completed</span>
+</div>
+<p class="text-sm font-medium text-on-surface-variant mb-5 leading-relaxed">75mg Soft chew. Post-surgical pain management (Spay recovery).</p>
+<div class="flex items-center gap-2 text-xs font-bold text-secondary">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+                        May 15 — May 22, 2023
+                    </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Support Visual -->
+<div class="mt-16 bg-surface-container-high rounded-3xl p-8 flex flex-col md:flex-row items-center gap-6 border border-outline-variant/30">
+<div class="w-24 h-24 rounded-full overflow-hidden bg-white shrink-0 border-4 border-white shadow-lg">
+<img alt="Vet Professional" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNFPoRQE24zv-mJduQVrzFmc6fEYP-a_8R2K3LqGIMTKaZ3TkCXmKtH8g4kb6geOvAxkr3z_EC-0tpcjvuTzJpaZV_opvKb0diMmdZ9QD4EsAPx5YlR8Th3092k96dppMS4nPfW70ZhrCVacVeqWE3uQY-AmIFcpxT2YJW84ddlIwqgVPWTrBv_fmJVFfxuMLuIDMwEnFBfvkY2vqj8zXpH5NN-0jSpuQGewRvjUUFmkLpMFA5xaPTY6jeSRtH1wKhlPwl2t4w84sP"/>
+</div>
+<div class="text-center md:text-left">
+<p class="text-lg font-extrabold text-on-surface mb-1">Need help with dosage?</p>
+<p class="text-sm font-medium text-on-surface-variant mb-4">Consult with Dr. Smith via the chat for any medication adjustments.</p>
+<button class="bg-primary text-white px-6 py-2.5 rounded-full text-xs font-bold flex items-center gap-2 uppercase tracking-widest mx-auto md:mx-0 shadow-md hover:shadow-lg transition-shadow">
+                Contact Vet <span class="material-symbols-outlined text-sm">chat</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (from COMPONENTS_10) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fff8f3]/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-t-[3rem] shadow-[0_-4px_20px_rgba(33,27,16,0.05)]">
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 transition-all duration-300 active:scale-95" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 transition-all duration-300 active:scale-95" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Pets</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#172642] text-white rounded-full p-4 scale-110 -translate-y-2 shadow-lg transition-all duration-300 cubic-bezier(0.34, 1.56, 0.64, 1)" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 transition-all duration-300 active:scale-95" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Add</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#595f69] dark:text-slate-400 p-3 hover:text-[#172642] dark:hover:text-blue-300 transition-all duration-300 active:scale-95" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-headline text-[10px] font-semibold uppercase tracking-widest mt-1">Settings</span>
+</a>
+</nav>
+</body></html>
