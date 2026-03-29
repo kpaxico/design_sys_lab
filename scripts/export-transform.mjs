@@ -199,7 +199,7 @@ mkdirSync(join(EXPORT_DIR, "ui"), { recursive: true });
 mkdirSync(join(EXPORT_DIR, "hooks"), { recursive: true });
 mkdirSync(join(EXPORT_DIR, "lib"), { recursive: true });
 
-// ── Step 6: Generate app.css ─────────────────────────────────────────────────
+// ── Step 6: Generate app.css from source template ────────────────────────────
 console.log("[6/8] Generating app.css...");
 
 const RADIUS_MAP = {
@@ -211,178 +211,136 @@ const RADIUS_MAP = {
 };
 const radiusValue = RADIUS_MAP[preset.radius] || "0.625rem";
 
-function formatTokens(tokenObj, indent = "\t") {
-	return Object.entries(tokenObj)
-		.filter(([key]) => key !== "radius") // radius is handled separately
-		.map(([key, value]) => `${indent}--${key}: ${value};`)
-		.join("\n");
-}
+// Read the source app.css as a template — extract everything EXCEPT
+// the style imports, style custom-variants, font imports, and :root/.dark token values
+const sourceAppCss = readFileSync(join(ROOT, "src/app.css"), "utf-8");
 
-const appCss = `@import "tailwindcss";
+function buildAppCss() {
+	// Extract the @theme inline block (between @theme inline { ... })
+	const themeInlineMatch = sourceAppCss.match(/@theme inline \{[\s\S]*?\n\}/);
+	const themeInlineBlock = themeInlineMatch ? themeInlineMatch[0] : "";
+
+	// Replace the radius value in @theme inline
+	const themeInline = themeInlineBlock.replace(
+		/--radius:\s*[^;]+;/,
+		`--radius: ${radiusValue};`
+	);
+
+	// Extract everything from @layer base onwards (custom variants, utilities, etc.)
+	const layerBaseIdx = sourceAppCss.indexOf("@layer base");
+	let restOfCss = layerBaseIdx !== -1 ? sourceAppCss.substring(layerBaseIdx) : "";
+
+	// Remove docs-specific stuff: @layer components with rehype/mdsx/super-debug
+	const layerComponentsIdx = restOfCss.indexOf("@layer components");
+	if (layerComponentsIdx !== -1) {
+		restOfCss = restOfCss.substring(0, layerComponentsIdx).trimEnd();
+	}
+
+	// Extract @custom-variant data-* blocks (between @layer base end and @utility)
+	const customVariantSection = sourceAppCss.match(
+		/\/\* Custom variants \*\/[\s\S]*?(?=@utility)/
+	);
+	const customVariants = customVariantSection ? customVariantSection[0] : "";
+
+	// Extract @utility blocks (only the essential ones)
+	const utilityBlocks = [];
+	const utilityRegex = /@utility\s+[\w-]+\s*\{[\s\S]*?\n\}/g;
+	let utilMatch;
+	while ((utilMatch = utilityRegex.exec(sourceAppCss)) !== null) {
+		const block = utilMatch[0];
+		// Skip docs-specific utilities
+		if (block.includes("container-wrapper") || block.includes("container {") ||
+			block.includes("section-soft") || block.includes("theme-container") ||
+			block.includes("border-ghost") || block.includes("bg-svelte-orange") ||
+			block.includes("step {")) continue;
+		// Avoid duplicate no-scrollbar
+		if (block.includes("no-scrollbar") && utilityBlocks.some(b => b.includes("no-scrollbar"))) continue;
+		utilityBlocks.push(block);
+	}
+
+	// Build :root and .dark blocks from merged tokens
+	function formatTokenBlock(tokenObj) {
+		return Object.entries(tokenObj)
+			.filter(([key]) => key !== "radius")
+			.map(([key, value]) => `\t--${key}: ${value};`)
+			.join("\n");
+	}
+
+	// Add tokens that themes.ts doesn't provide but components need
+	const extraLightTokens = {
+		"destructive-foreground": tokens.light["destructive-foreground"] || "oklch(0.95 0.02 25)",
+		"selection": tokens.light["selection"] || tokens.light["accent"] || "oklch(0.82 0.06 260)",
+		"selection-foreground": tokens.light["selection-foreground"] || "oklch(1 0 0)",
+		"surface": tokens.light["surface"] || tokens.light["background"] || "oklch(0.98 0 0)",
+		"surface-foreground": tokens.light["surface-foreground"] || "var(--foreground)",
+		"code": tokens.light["code"] || "var(--surface)",
+		"code-foreground": tokens.light["code-foreground"] || "var(--surface-foreground)",
+		"code-highlight": tokens.light["code-highlight"] || "oklch(0.96 0 0)",
+		"code-number": tokens.light["code-number"] || "oklch(0.56 0 0)",
+	};
+	const extraDarkTokens = {
+		"destructive-foreground": tokens.dark["destructive-foreground"] || "oklch(0.95 0.02 25)",
+		"selection": tokens.dark["selection"] || tokens.dark["accent"] || "oklch(0.30 0.05 260)",
+		"selection-foreground": tokens.dark["selection-foreground"] || "oklch(0.95 0.01 80)",
+		"surface": tokens.dark["surface"] || "oklch(0.20 0 0)",
+		"surface-foreground": tokens.dark["surface-foreground"] || "oklch(0.708 0 0)",
+		"code": tokens.dark["code"] || "var(--surface)",
+		"code-foreground": tokens.dark["code-foreground"] || "var(--surface-foreground)",
+		"code-highlight": tokens.dark["code-highlight"] || "oklch(0.27 0 0)",
+		"code-number": tokens.dark["code-number"] || "oklch(0.72 0 0)",
+	};
+
+	const mergedLight = { ...tokens.light, ...extraLightTokens };
+	const mergedDark = { ...tokens.dark, ...extraDarkTokens };
+
+	return `@import "tailwindcss";
 @import "tw-animate-css";
 @import "${font.dependency}/index.css";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-	--font-sans: var(--font-sans);
-	--font-mono: var(--font-mono);
-	--radius: ${radiusValue};
-	--radius-sm: calc(var(--radius) - 4px);
-	--radius-md: calc(var(--radius) - 2px);
-	--radius-lg: var(--radius);
-	--radius-xl: calc(var(--radius) + 4px);
-	--radius-2xl: calc(var(--radius) + 8px);
-	--radius-3xl: calc(var(--radius) + 12px);
-	--radius-4xl: calc(var(--radius) + 16px);
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--color-card: var(--card);
-	--color-card-foreground: var(--card-foreground);
-	--color-popover: var(--popover);
-	--color-popover-foreground: var(--popover-foreground);
-	--color-primary: var(--primary);
-	--color-primary-foreground: var(--primary-foreground);
-	--color-secondary: var(--secondary);
-	--color-secondary-foreground: var(--secondary-foreground);
-	--color-muted: var(--muted);
-	--color-muted-foreground: var(--muted-foreground);
-	--color-accent: var(--accent);
-	--color-accent-foreground: var(--accent-foreground);
-	--color-destructive: var(--destructive);
-	--color-destructive-foreground: var(--destructive-foreground);
-	--color-border: var(--border);
-	--color-input: var(--input);
-	--color-ring: var(--ring);
-	--color-chart-1: var(--chart-1);
-	--color-chart-2: var(--chart-2);
-	--color-chart-3: var(--chart-3);
-	--color-chart-4: var(--chart-4);
-	--color-chart-5: var(--chart-5);
-	--color-sidebar: var(--sidebar);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-ring: var(--sidebar-ring);
-}
+${themeInline}
 
 :root {
-	${font.variable}: ${font.family};
-	--font-mono: "Geist Mono Variable", monospace;
-${formatTokens(tokens.light)}
+\t${font.variable}: ${font.family};
+\t--font-mono: "Geist Mono Variable", monospace;
+${formatTokenBlock(mergedLight)}
 }
 
 .dark {
-${formatTokens(tokens.dark)}
+${formatTokenBlock(mergedDark)}
 }
 
 @layer base {
-	* {
-		@apply border-border outline-ring/50;
-	}
+\t* {
+\t\t@apply border-border outline-ring/50;
+\t}
 
-	::selection {
-		@apply bg-selection text-selection-foreground;
-	}
+\t::selection {
+\t\t@apply bg-selection text-selection-foreground;
+\t}
 
-	html {
-		@apply overscroll-none scroll-smooth;
-	}
+\thtml {
+\t\t@apply overscroll-none scroll-smooth;
+\t}
 
-	body {
-		font-synthesis-weight: none;
-		text-rendering: optimizeLegibility;
-	}
+\tbody {
+\t\tfont-synthesis-weight: none;
+\t\ttext-rendering: optimizeLegibility;
+\t}
 
-	a:active,
-	button:active {
-		@apply opacity-60 md:opacity-100;
-	}
+\ta:active,
+\tbutton:active {
+\t\t@apply opacity-60 md:opacity-100;
+\t}
 }
 
-@custom-variant data-open {
-	&:where([data-state="open"]),
-	&:where([data-open]:not([data-open="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-closed {
-	&:where([data-state="closed"]),
-	&:where([data-closed]:not([data-closed="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-checked {
-	&:where([data-state="checked"]),
-	&:where([data-checked]:not([data-checked="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-unchecked {
-	&:where([data-state="unchecked"]),
-	&:where([data-unchecked]:not([data-unchecked="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-selected {
-	&:where([data-selected]) {
-		@slot;
-	}
-}
-
-@custom-variant data-disabled {
-	&:where([data-disabled="true"]),
-	&:where([data-disabled]:not([data-disabled="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-active {
-	&:where([data-state="active"]),
-	&:where([data-active]:not([data-active="false"])) {
-		@slot;
-	}
-}
-
-@custom-variant data-horizontal {
-	&:where([data-orientation="horizontal"]) {
-		@slot;
-	}
-}
-
-@custom-variant data-vertical {
-	&:where([data-orientation="vertical"]) {
-		@slot;
-	}
-}
-
-@utility no-scrollbar {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-
-	&::-webkit-scrollbar {
-		display: none;
-	}
-}
-
-@utility border-grid {
-	@apply border-border/50 dark:border-border;
-}
-
-@utility extend-touch-target {
-	@media (pointer: coarse) {
-		@apply relative touch-manipulation after:absolute after:-inset-2;
-	}
-}
+${customVariants}
+${utilityBlocks.join("\n\n")}
 `;
+}
 
+const appCss = buildAppCss();
 writeFileSync(join(EXPORT_DIR, "app.css"), appCss, "utf-8");
 
 // ── Step 7: Transform and copy all components ────────────────────────────────
